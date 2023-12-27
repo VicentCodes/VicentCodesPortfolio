@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vicente N - Portfolio</title>
+
+
+    <link rel="shortcut icon" href="images/logo2.png" type="image/x-icon">
+
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/styles.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <!--
+    - #MAIN
+  -->
+
+    <main>
+
+        <article class="contact active" data-page="contact">
+
+            <header>
+                <h2 class="h2 article-title">Login</h2>
+            </header>
+
+            <section class="contact-form">
+
+                <h3 class="h3 form-title">Enter your credentials</h3>
+                <% if (typeof error !=='undefined' && error !==null) { %>
+                    <div class="error-container" id="errorContainer">
+                        <div class="close-icon" onclick="closeError()">×</div>
+                        <p id="errorMessage">
+                            <%= error %>
+                        </p>
+                    </div>
+                    <% } %>
+                        <form method="POST" action="/verify" class="form" data-form>
+
+                            <div class="input-wrapperr">
+                                <input type="text" id="username" name="username" class="form-input"
+                                    placeholder="Username" required data-form-input>
+
+                            </div>
+                            <div class="input-wrapperr">
+                                <input type="password" id="userpassword" name="userpassword" class="form-input"
+                                    placeholder="Password" required data-form-input>
+                            </div>
+
+                            <div class="input-wrapperrr">
+                                <button class="form-btn " type="submit" data-form-btn>
+                                    <span>Log in</span>
+                                </button>
+                            </div>
+                           
+                           
+
+                        </form>
+
+            </section>
+
+        </article>
+
+        </div>
+
+    </main>
+    <script src="/js/script.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+</body>
+
+</html>

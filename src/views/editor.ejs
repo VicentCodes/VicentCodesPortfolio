@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>VicentCode Admin</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400&display=swap" rel="stylesheet">
+   
+    <script src="js/script.js"></script>
+
+    <script src="https://cdn.tiny.cloud/1/<%= process.env.tinyAPI %>/tinymce/5/tinymce.min.js"
+        referrerpolicy="origin"></script>
+   
+
+    <script>
+    tinymce.init({
+        selector: '#editor',
+        plugins: 'print preview powerpaste casechange importcss tinydrive searchreplace autolink autosave save directionality advcode visualblocks visualchars fullscreen image link media mediaembed template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists checklist wordcount tinymcespellchecker a11ychecker imagetools textpattern noneditable help formatpainter pageembed permanentpen charmap mentions quickbars linkchecker emoticons advtable imageformats code',
+        toolbar: 'undo redo | formatselect | bold italic underline strikethrough | forecolor backcolor | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | link image media | fontselect fontsizeselect | removeformat | code | export-html | upload',
+        height: 500,
+        content_css: [
+            'https://fonts.googleapis.com/css2?family=Lato:wght@300;400&display=swap',
+            'https://www.tiny.cloud/css/content-standard.min.css'
+        ],
+        file_picker_callback: function (callback, value, meta) {
+
+            const loaderDialog = document.getElementById('loader-dialog');
+           
+      
+            const input = document.createElement('input');
+            input.setAttribute('type', 'file');
+            input.setAttribute('accept', 'image/*,video/*');
+      
+            input.onchange = function () {
+                const file = this.files[0];
+                loaderDialog.style.display = 'block';
+                const formData = new FormData();
+                formData.append('file', file);
+      
+                fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        loaderDialog.style.display = 'none';
+      
+                        callback(data.url, { title: file.name });
+                    })
+                    .catch(error => {
+                        console.error('Error uploading file:', error);
+                        loaderDialog.style.display = 'none';
+                    });
+            };
+      
+            input.click();
+        }
+      });
+    </script>
+
+    <style>
+        #loader-dialog {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgb(255 255 255);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            z-index: 4000;
+            display: none;
+        }
+
+        #loader-dialog p {
+            margin: 0;
+            font-size: 16px;
+            text-align: center;
+        }
+    </style>
+
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="vendors/feather/feather.css">
+    <link rel="stylesheet" href="vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" href="vendors/css/vendor.bundle.base.css">
+    <link rel="stylesheet" href="vendors/datatables.net-bs4/dataTables.bootstrap4.css">
+    <link rel="stylesheet" href="vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" type="text/css" href="js/dash/select.dataTables.min.css">
+    <link rel="stylesheet" href="css/vertical-layout-light/style.css">
+    <link rel="shortcut icon" href="images/favicon.png" />
+
+   
+</head>
+
+<body>
+    <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs"
+    type="module"></script>
+    <div class="container-scroller">
+        <!-- partial:partials/_navbar.html -->
+        <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+            <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
+                <a class="navbar-brand brand-logo mr-5" href="/"><img src="images/logo.ico" class="mr-2"
+                        alt="logo" /></a>
+                <a class="navbar-brand brand-logo-mini"><img src="images/logo.ico" alt="logo" /></a>
+            </div>
+            <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+                <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+                    <span class="icon-menu"></span>
+                </button>
+                <ul class="navbar-nav mr-lg-2">
+
+                </ul>
+                <ul class="navbar-nav navbar-nav-right">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#"
+                            data-toggle="dropdown">
+                            <i class="icon-bell mx-0"></i>
+                            <span class="count"></span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
+                            aria-labelledby="notificationDropdown">
+                            <p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
+                            <a class="dropdown-item preview-item">
+                                <div class="preview-thumbnail">
+                                    <div class="preview-icon bg-success">
+                                        <i class="ti-info-alt mx-0"></i>
+                                    </div>
+                                </div>
+                                <div class="preview-item-content">
+                                    <h6 class="preview-subject font-weight-normal">Application Error</h6>
+                                    <p class="font-weight-light small-text mb-0 text-muted">
+                                        Just now
+                                    </p>
+                                </div>
+                            </a>
+
+
+                        </div>
+                    </li>
+                    <li class="nav-item nav-profile dropdown">
+                        <a class="nav-link dropdown-toggle"  data-toggle="dropdown" id="profileDropdown">
+                            <img src="<%= userInfo.image %>" alt="<%= userInfo.username %>" />
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown"
+                            aria-labelledby="profileDropdown">
+                            <a class="dropdown-item">
+                                <i class="ti-settings text-primary"></i>
+                                Settings
+                            </a>
+                            <a class="dropdown-item">
+                                <i class="ti-power-off text-primary"></i>
+                                Logout
+                            </a>
+                        </div>
+                    </li>
+                    <li class="nav-item nav-settings d-none d-lg-flex">
+                        <a class="nav-link" href="#">
+                            <i class="icon-ellipsis"></i>
+                        </a>
+                    </li>
+                </ul>
+                <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
+                    data-toggle="offcanvas">
+                    <span class="icon-menu"></span>
+                </button>
+            </div>
+        </nav>
+        <!-- partial -->
+        <div class="container-fluid page-body-wrapper">
+            <div class="theme-setting-wrapper">
+                <div id="settings-trigger"><i class="ti-settings"></i></div>
+                <div id="theme-settings" class="settings-panel">
+                    <i class="settings-close ti-close"></i>
+                    <p class="settings-heading">SIDEBAR SKINS</p>
+                    <div class="sidebar-bg-options selected" id="sidebar-light-theme">
+                        <div class="img-ss rounded-circle bg-light border mr-3"></div>Light
+                    </div>
+                    <div class="sidebar-bg-options" id="sidebar-dark-theme">
+                        <div class="img-ss rounded-circle bg-dark border mr-3"></div>Dark
+                    </div>
+                    <p class="settings-heading mt-2">HEADER SKINS</p>
+                    <div class="color-tiles mx-0 px-4">
+                        <div class="tiles success"></div>
+                        <div class="tiles warning"></div>
+                        <div class="tiles danger"></div>
+                        <div class="tiles info"></div>
+                        <div class="tiles dark"></div>
+                        <div class="tiles default"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="right-sidebar" class="settings-panel">
+                <i class="settings-close ti-close"></i>
+                <ul class="nav nav-tabs border-top" id="setting-panel" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="todo-tab" data-toggle="tab" href="#todo-section" role="tab"
+                            aria-controls="todo-section" aria-expanded="true">TO DO LIST</a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="setting-content">
+                    <div class="tab-pane fade show active scroll-wrapper" id="todo-section" role="tabpanel"
+                        aria-labelledby="todo-section">
+                        <div class="add-items d-flex px-3 mb-0">
+                            <form class="form w-100">
+                                <div class="form-group d-flex">
+                                    <input type="text" class="form-control todo-list-input" placeholder="Add To-do">
+                                    <button type="submit" class="add btn btn-primary todo-list-add-btn"
+                                        id="add-task">Add</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="list-wrapper px-3">
+                            <ul class="d-flex flex-column-reverse todo-list">
+
+                                <li class="completed">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input class="checkbox" type="checkbox" checked>
+                                            Project review
+                                        </label>
+                                    </div>
+                                    <i class="remove ti-close"></i>
+                                </li>
+                            </ul>
+                        </div>
+                        <h4 class="px-3 text-muted mt-5 font-weight-light mb-0">Events</h4>
+                        <div class="events pt-4 px-3">
+                            <div class="wrapper d-flex mb-2">
+                                <i class="ti-control-record text-primary mr-2"></i>
+                                <span>Feb 11 2018</span>
+                            </div>
+                            <p class="mb-0 font-weight-thin text-gray">Creating component page build a js</p>
+                            <p class="text-gray mb-0">The total number of sessions</p>
+                        </div>
+
+                    </div>
+                    <!-- To do section tab ends -->
+
+                    <!-- chat tab ends -->
+                </div>
+            </div>
+            <nav class="sidebar sidebar-offcanvas" id="sidebar">
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin">
+                            <i class="icon-grid menu-icon"></i>
+                            <span class="menu-title">Dashboard</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="/editor">
+                            <i class="icon-paper menu-icon"></i>
+                            <span class="menu-title">Editor</span>
+                        </a>
+                    </li>
+                </ul>
+
+
+            </nav>
+            <!-- partial -->
+            <div style="display:flex;flex-direction: column; width: -webkit-fill-available; margin: 10px;" >
+                <div id="loader-dialog">
+                    <dotlottie-player src="https://lottie.host/646b4d7b-a36a-4a50-ac3f-364d3f0b28c9/48dPyqsPCl.json"
+                        background="transparent" speed="1" style="width: 120px; height: 80px;" loop
+                        autoplay></dotlottie-player>
+                    <p>Uploading...</p>
+                </div>
+
+                
+
+                <% if (typeof error !=='undefined' && error !==null) { %>
+                    <div class="error-container" id="errorContainer">
+                        <dotlottie-player src="https://lottie.host/646b4d7b-a36a-4a50-ac3f-364d3f0b28c9/48dPyqsPCl.json"
+                        background="transparent" speed="1" style="width: 120px; height: 80px;" loop
+                        autoplay></dotlottie-player>
+                        <div class="close-icon" onclick="closeError()">×</div>
+                        <p id="errorMessage">
+                            <%= error %>
+                        </p>
+                    </div>
+                    <% } %>
+
+                <h1>Editor</h1>
+                <form action="/sendB" method="post" >
+                    <label for="titles" name="title" >Título:</label>
+                    <input type="text" id="title" name="title" required>
+                    <label for="contents">Contenido:</label>
+                    <textarea style="padding-top: 10px; padding-bottom: 10px;" id="editor" name="content"></textarea>
+                    <button type="submit">Guardar</button>
+                </form>
+
+            </div>
+
+           
+
+          
+            <!-- main-panel ends -->
+        </div>
+    </div>
+
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var currentDateElement = document.getElementById("currentDate");
+
+            var currentDate = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+
+            currentDateElement.textContent = currentDate;
+        });
+    </script>
+
+    <script src="vendors/js/vendor.bundle.base.js"></script>
+    <script src="vendors/chart.js/Chart.min.js"></script>
+    <script src="vendors/datatables.net/jquery.dataTables.js"></script>
+    <script src="vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+    <script src="js/dash/dataTables.select.min.js"></script>
+
+    <!-- inject:js -->
+    <script src="js/dash/off-canvas.js"></script>
+    <script src="js/dash/hoverable-collapse.js"></script>
+    <script src="js/dash/template.js"></script>
+    <script src="js/dash/settings.js"></script>
+    <script src="js/dash/todolist.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="js/dash/dashboard.js"></script>
+    <script src="js/dash/Chart.roundedBarCharts.js"></script>
+    <!-- End custom js for this page-->
+</body>
+
+</html>

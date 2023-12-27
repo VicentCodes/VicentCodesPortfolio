@@ -1,0 +1,96 @@
+/**
+   * Error Container
+   */
+
+
+
+.error-container {
+  background-color: #ff6666;
+  color: #fff;
+  padding-top: 10px;
+  padding-left: 10px;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  text-align: justify;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+.close-icon {
+  position: absolute;
+  top: 3px;
+  right: 5px;
+  padding-right: 5px;
+  cursor: pointer;
+  font-size: 18px;
+  color: #fff;
+}
+
+/**
+      * #VerifyAccount
+      */
+
+.body2FA {
+  font-family: "Arial", sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  flex-direction: column;
+}
+
+.container2FA {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  text-align: center;
+}
+
+.h22FA {
+  color: #333;
+}
+
+.input2FA {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  box-sizing: border-box;
+}
+
+.button2FA {
+  background-color: #4caf50;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.sidebar,
+article {
+  background: hsl(240, 2%, 12%);
+  border: 1px solid var(--jet);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: var(--shadow-1);
+  z-index: 1;
+}
+
+.titless{
+  color: hsl(0, 0%, 98%);
+}
+
+.form-input {
+  color: var(--white-2);
+  font-size: var(--fs-6);
+  font-weight: var(--fw-400);
+  padding: 13px 20px;
+  border: 1px solid var(--jet);
+  border-radius: 14px;
+  outline: none;
+}
