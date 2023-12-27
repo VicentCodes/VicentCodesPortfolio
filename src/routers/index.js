@@ -1,7 +1,6 @@
 const express = require("express");
 const admin = require("firebase-admin");
 const multer = require("multer");
-const fs = require("fs");
 const { enviarCorreo } = require("../models/emailService.js");
 const Blog = require("../models/Blog.js");
 const Login = require("../models/User.js");
@@ -15,10 +14,26 @@ const { SitemapStream, streamToPromise } = require("sitemap");
 const dotenv = require("dotenv");
 dotenv.config();
 
-const serviceAccount = require("../middlewares/serviceAccountKey.json");
+//firebase config
+const serviceAccounts = {
+  "type": "service_account",
+  "project_id": process.env.FIREBASE_PROJECT_ID,
+  "private_key_id": process.env.FIREBASE_PRIVATE_KEY_ID,
+  "private_key": process.env.FIREBASE_PRIVATE_KEY,
+  "client_email": process.env.FIREBASE_CLIENT_EMAIL,
+  "client_id": process.env.FIREBASE_CLIENT_ID,
+  "auth_uri": process.env.FIREBASE_AUTH_URI,
+  "token_uri": process.env.FIREBASE_TOKEN_URI,
+  "auth_provider_x509_cert_url": process.env.FIREBASE_AUTH_PROVIDER_X509_CERT_URL,
+  "client_x509_cert_url": process.env.FIREBASE_CLIENT_X509_CERT_URL,
+  "universe_domain": process.env.FIREBASE_UNIVERSE_DOMAIN
+};
+
+
+
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  storageBucket: process.env.storageBucket,
+  credential: admin.credential.cert(serviceAccounts),
+  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
 });
 
 const storage = admin.storage().bucket();

@@ -130,8 +130,3 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-
-# Firebase google-services.json file
-src/middlewares/serviceAccountKey.json
-src/middlewares/firebaseConfig.js
-
