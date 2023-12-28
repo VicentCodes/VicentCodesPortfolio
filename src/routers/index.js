@@ -223,8 +223,8 @@ router.post("/VerifyAccount", async (req, res) => {
 
     enviarCorreo(
       user.Email,
-      "Inicio de sesión de " + user.Username + " en vicentcode.dev",
-      "Se ha detectado un inicio de sesión en vicentcode.dev",
+      "Inicio de sesión de " + user.Username + " en VicentCodes.com",
+      "Se ha detectado un inicio de sesión en VicentCodes.com",
       req.ip
     );
   } catch (error) {
@@ -323,7 +323,7 @@ router.get("/sitemap.xml", async (req, res) => {
 
     // Create a new sitemap and configure it
     const sitemapStream = new SitemapStream({
-      hostname: "https://vicentcode.dev",
+      hostname: "https://VicentCodes.com",
     });
 
     // Iterate over the routes and write them to the sitemap

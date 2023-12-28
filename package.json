@@ -10,7 +10,7 @@
   "keywords": [
     "Portfolio"
   ],
-  "author": "VicentCode",
+  "author": "VicentCodes",
   "license": "ISC",
   "dependencies": {
     "axios": "^1.6.1",

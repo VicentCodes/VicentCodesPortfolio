@@ -6,9 +6,9 @@ dotenv.config();
 const transporter = nodemailer.createTransport({
   host: 'mail.spacemail.com',
   port: 465,
-  secure: true, // Usar SSL
+  secure: true, 
   auth: {
-    user: 'contact@vicentcode.dev',
+    user: process.env.emailUser,
     pass: process.env.emailPass,
   },
 });
@@ -31,7 +31,7 @@ async function enviarCorreo(destinatario, asunto, mensaje, ip) {
   const mensajeFinal = `${mensaje}\nFecha: ${fechaFormateada}\nIP: ${ip}\nUbicación aproximada: ${infoIP.city}, ${infoIP.region}, ${infoIP.country}`;
 
   const mailOptions = {
-    from: 'VicentCode.dev <contact@vicentcode.dev>',
+    from: `VicentCodes.com <${process.env.emailPass}>`,
     to: destinatario,
     subject: asunto,
     text: mensajeFinal,
