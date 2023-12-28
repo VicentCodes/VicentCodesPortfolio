@@ -8,11 +8,14 @@ const { checkSessionActive } = require("../middlewares/checkSessionActive.js");
 const jwt = require("jsonwebtoken");
 const session = require("express-session");
 const crypto = require("crypto");
-const secretKey = crypto.randomBytes(32).toString("hex");
 const speakeasy = require("speakeasy");
+const MongoStore = require("connect-mongo");
 const { SitemapStream, streamToPromise } = require("sitemap");
 const dotenv = require("dotenv");
 dotenv.config();
+
+const secretKey = process.env.SESSION_SECRET || "tu_secreto_predeterminado";
+
 
 const routes = ["/", "/about", "/contact", "/resume", "/portfolio", "/blog"]; // for sitemap generation
 
@@ -114,6 +117,7 @@ router.use(
     secret: secretKey,
     resave: true,
     saveUninitialized: true,
+    store: MongoStore.create({ mongoUrl: process.env.MONGO_URL }), // Ajusta la URL de conexión a MongoDB según sea necesario
   })
 );
 
