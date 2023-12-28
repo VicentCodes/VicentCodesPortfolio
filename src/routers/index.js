@@ -182,12 +182,12 @@ router.post("/verify", async (req, res) => {
 
     if (!user || userpassword !== user.Password) {
       return res
-        .status(500)
+        .status(400)
         .render("login", { error: "Username or password incorrect" });
     }
     res.render("verifyAccount", { Username: username });
   } catch (error) {
-    return res.status(500).render("login", { error: "Error to validate user" });
+    return res.status(400).render("login", { error: "Error to validate user" });
   }
 });
 
@@ -201,7 +201,7 @@ router.post("/VerifyAccount", async (req, res) => {
 
     if (!user) {
       return res
-        .status(500)
+        .status(400)
         .render("verifyAccount", { username, error: "User not found" });
     }
 
@@ -213,7 +213,7 @@ router.post("/VerifyAccount", async (req, res) => {
 
     if (!verified) {
       return res
-        .status(500)
+        .status(400)
         .render("verifyAccount", { username, error: "Error verifying 2FA" });
     }
 
