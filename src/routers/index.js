@@ -14,6 +14,9 @@ const { SitemapStream, streamToPromise } = require("sitemap");
 const dotenv = require("dotenv");
 dotenv.config();
 
+const routes = ["/", "/about", "/contact", "/resume", "/portfolio", "/blog"]; // for sitemap generation
+
+
 //firebase config
 const serviceAccounts = {
   "type": "service_account",
