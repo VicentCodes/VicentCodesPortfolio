@@ -3,9 +3,10 @@ const { format } = require('date-fns');
 const axios = require('axios');
 const dotenv = require("dotenv");
 dotenv.config();
+
 const transporter = nodemailer.createTransport({
   host: 'mail.spacemail.com',
-  port: 465,
+  port: 465, //for SSL SMTP
   secure: true, 
   auth: {
     user: process.env.emailUser,
@@ -31,7 +32,7 @@ async function enviarCorreo(destinatario, asunto, mensaje, ip) {
   const mensajeFinal = `${mensaje}\nFecha: ${fechaFormateada}\nIP: ${ip}\nUbicación aproximada: ${infoIP.city}, ${infoIP.region}, ${infoIP.country}`;
 
   const mailOptions = {
-    from: `VicentCodes.com <${process.env.emailPass}>`,
+    from: `VicentCodes Security Info <${process.env.emailUser}>`,
     to: destinatario,
     subject: asunto,
     text: mensajeFinal,
