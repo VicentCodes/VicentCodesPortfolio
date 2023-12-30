@@ -14,7 +14,6 @@ const { SitemapStream, streamToPromise } = require("sitemap");
 const dotenv = require("dotenv");
 dotenv.config();
 
-const analytics = require('@vercel/analytics');
 
 
 const secretKey = process.env.SESSION_SECRET || "tu_secreto_predeterminado";
@@ -63,11 +62,6 @@ function getContentType(filename) {
   }
 }
 
-
-router.use((req, res, next) => {
-  analytics.inject();
-  next();
-});
 
 // Multer middleware for file upload
 const upload = multer();

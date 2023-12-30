@@ -6,7 +6,7 @@ const IndexRoutes = require("./src/routers/index.js");
 app.set('trust proxy', true);
 const dotenv = require('dotenv');
 const log = require('morgan');
-
+const analytics = require('@vercel/analytics');
 dotenv.config();
 const mongoURL = process.env.MONGO_URL;
 
@@ -15,6 +15,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.set("port", process.env.PORT || 3000);
 app.use(log('dev'));
 
+
+app.use((req, res, next) => {
+  analytics.inject();
+  next();
+});
 
 const { default: mongoose } = require("mongoose");
 
