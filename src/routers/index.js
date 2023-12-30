@@ -14,6 +14,9 @@ const { SitemapStream, streamToPromise } = require("sitemap");
 const dotenv = require("dotenv");
 dotenv.config();
 
+const analytics = require('@vercel/analytics');
+const analyticsHandler = analytics();
+
 const secretKey = process.env.SESSION_SECRET || "tu_secreto_predeterminado";
 
 
@@ -44,6 +47,8 @@ admin.initializeApp({
 
 const storage = admin.storage().bucket();
 const router = express.Router();
+
+router.use(analyticsHandler);
 
 // Utility function to determine content type based on file extension
 function getContentType(filename) {
