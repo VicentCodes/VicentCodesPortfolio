@@ -303,10 +303,22 @@ router.post(
   }
 );
 
-router.get("/blogs:id", (req, res) => {
+// En tu ruta
+router.get("/blogs/:id", async (req, res) => {
   const blogId = req.params.id;
 
-  res.render("workinprogress");
+  try {
+    const blogPost = await Blog.findById(blogId.slice(1));
+
+    if (!blogPost) {
+      return res.status(404).render("blogs", { error: "Blog not found" });
+    }
+
+    res.render("blogs", { blogPost: [blogPost] });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).render("blogs", { error: "Internal server error" });
+  }
 });
 
 // Other routes (about, contact, resume, portfolio, blog)
