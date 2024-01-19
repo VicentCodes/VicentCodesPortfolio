@@ -14,30 +14,24 @@ const { SitemapStream, streamToPromise } = require("sitemap");
 const dotenv = require("dotenv");
 dotenv.config();
 
-
-
 const secretKey = process.env.SESSION_SECRET || "tu_secreto_predeterminado";
-
 
 const routes = ["/", "/about", "/contact", "/resume", "/portfolio", "/blog"]; // for sitemap generation
 
-
 //firebase config
 const serviceAccounts = {
-  "type": "service_account",
-  "project_id": process.env.FIREBASE_PROJECT_ID,
-  "private_key_id": process.env.FIREBASE_PRIVATE_KEY_ID,
-  "private_key": process.env.FIREBASE_PRIVATE_KEY,
-  "client_email": process.env.FIREBASE_CLIENT_EMAIL,
-  "client_id": process.env.FIREBASE_CLIENT_ID,
-  "auth_uri": process.env.FIREBASE_AUTH_URI,
-  "token_uri": process.env.FIREBASE_TOKEN_URI,
-  "auth_provider_x509_cert_url": process.env.FIREBASE_AUTH_PROVIDER_X509_CERT_URL,
-  "client_x509_cert_url": process.env.FIREBASE_CLIENT_X509_CERT_URL,
-  "universe_domain": process.env.FIREBASE_UNIVERSE_DOMAIN
+  type: "service_account",
+  project_id: process.env.FIREBASE_PROJECT_ID,
+  private_key_id: process.env.FIREBASE_PRIVATE_KEY_ID,
+  private_key: process.env.FIREBASE_PRIVATE_KEY,
+  client_email: process.env.FIREBASE_CLIENT_EMAIL,
+  client_id: process.env.FIREBASE_CLIENT_ID,
+  auth_uri: process.env.FIREBASE_AUTH_URI,
+  token_uri: process.env.FIREBASE_TOKEN_URI,
+  auth_provider_x509_cert_url: process.env.FIREBASE_AUTH_PROVIDER_X509_CERT_URL,
+  client_x509_cert_url: process.env.FIREBASE_CLIENT_X509_CERT_URL,
+  universe_domain: process.env.FIREBASE_UNIVERSE_DOMAIN,
 };
-
-
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccounts),
@@ -61,7 +55,6 @@ function getContentType(filename) {
       return "application/octet-stream";
   }
 }
-
 
 // Multer middleware for file upload
 const upload = multer();
@@ -309,6 +302,12 @@ router.post(
     }
   }
 );
+
+router.get("/blogs:id", (req, res) => {
+  const blogId = req.params.id;
+
+  res.render("workinprogress");
+});
 
 // Other routes (about, contact, resume, portfolio, blog)
 const renderOtherRoutes = async (req, res) => {
