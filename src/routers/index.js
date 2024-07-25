@@ -66,6 +66,14 @@ function getContentType(filename) {
 // Multer middleware for file upload
 const upload = multer();
 
+router.get("/delete", async (req, res) => {
+  res.render("delete");
+} );
+
+router.get("/terms", async (req, res) => {
+  res.render("terms");
+} );
+
 // Route for handling file uploads
 router.post("/upload", upload.single("file"), async (req, res) => {
   try {
