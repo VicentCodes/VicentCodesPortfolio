@@ -70,7 +70,7 @@ router.get("/delete", async (req, res) => {
   res.render("delete");
 } );
 
-router.get("/terms", async (req, res) => {
+router.get("/privacy", async (req, res) => {
   res.render("terms");
 } );
 
