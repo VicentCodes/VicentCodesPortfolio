@@ -130,3 +130,16 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Backups de entorno generados por envs.sh (contienen secretos)
+.env.bak
+*.bak
+
+# Editores
+.vscode/
+.idea/
+
